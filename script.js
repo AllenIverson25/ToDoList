@@ -1,3 +1,8 @@
+// Add this function at the top of your file
+function updateTaskCount() {
+  document.getElementById('taskCount').textContent = `Total Tasks: ${tasks.length}`;
+}
+
 //init an array to store tasks
 let tasks = [];
 
@@ -17,46 +22,37 @@ document.getElementById('addTaskBtn').addEventListener('click', function () {
 });
 
 //Function to display tasks
- function displayTasks() {
-  //Get the task list element
-  let taskList = document.getElementById('taskList');
-  //Clear the task list
-  taskList.innerHTML = '';
+function displayTasks() {
+    let taskList = document.getElementById('taskList');
+    taskList.innerHTML = '';
 
-  //Loop through the tasks array
- tasks.forEach((task, index) => {
-    //Create a new list item for each task
-    let li = document.createElement('li');
-  
-    //Add bootstrap classes to the list item
-    li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-center');
+    tasks.forEach((task, index) => {
+        let li = document.createElement('li');
+        li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-center');
 
- //InnerHtml of the list item
- li.innerHTML = `${task} <button class='btn btn-light btn-sm' onclick='removeTask(${index})'>√</button>`;
- 
+        const taskHTML = `
+            <span class="task-text">${task}</span>
+            <button class="delete-btn" data-index="${index}">×</button>
+        `;
 
+        li.innerHTML = taskHTML;
+        taskList.appendChild(li);
 
-  //Append the list item to the task list
-  taskList.appendChild(li);
+        // Add click event listener to the delete button
+        const deleteBtn = li.querySelector('.delete-btn');
+        deleteBtn.addEventListener('click', function() {
+            removeTask(index);
+        });
+    });
 
-
-
-
-
-
-
-
-})
- }
+    updateTaskCount();
+}
 
 //Function to remove tasks
 function removeTask(index) {
-  //Remove the task from the tasks array
-  tasks.splice(index, 1);
-  //Display the tasks
-  displayTasks();
+    tasks.splice(index, 1);
+    displayTasks();
 }
-
 
 // Event listener for the clear all button
 document.getElementById('clearTaskBtn').addEventListener('click', function () {
@@ -64,4 +60,18 @@ document.getElementById('clearTaskBtn').addEventListener('click', function () {
   tasks = [];
   //Display the tasks
   displayTasks();
+});
+// Add this event listener after your existing code
+document.getElementById('taskInput').addEventListener('keypress', function(event) {
+  if (event.key === 'Enter') {
+    // Prevent default form submission behavior
+    event.preventDefault();
+    
+    let taskInput = document.getElementById('taskInput').value;
+    if (taskInput) {
+      tasks.push(taskInput);
+      document.getElementById('taskInput').value = '';
+      displayTasks();
+    }
+  }
 });
