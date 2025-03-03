@@ -67,11 +67,11 @@ document.getElementById('taskInput').addEventListener('keypress', function(event
     // Prevent default form submission behavior
     event.preventDefault();
     
-    let taskInput = document.getElementById('taskInput').value;
-    if (taskInput) {
-      tasks.push(taskInput);
-      document.getElementById('taskInput').value = '';
-      displayTasks();
+    let taskInput = document.getElementById('taskInput').value; // Get the input field value
+    if (taskInput) { // Check if the input is not empty
+      tasks.push(taskInput);  // Add the task to the array
+      document.getElementById('taskInput').value = ''; // Clear the input field
+      displayTasks(); // Update and display the task list
     }
   }
 });
